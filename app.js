@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const fs = require('fs')
 const Discord = require('discord.js')
 const { prefix, token } = require('./config.json')
@@ -59,4 +62,4 @@ client.on('guildMemberAdd', (member) => {
   member.roles.add(roller.misafir.id)
 })
 
-client.login(token)
+client.login(process.env.DC_TOKEN)
