@@ -47,7 +47,7 @@ client.on('message', message => {
 })
 
 client.on('guildMemberAdd', (member) => {
-  //rol atayabilrisin ve hoşgeldin mesajı bla bla bla
+  //yeni gelen üyeler
   member.roles.add(roller.misafir.id)
 })
 
