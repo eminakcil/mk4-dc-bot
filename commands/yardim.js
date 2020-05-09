@@ -12,6 +12,8 @@ module.exports = {
 		roller.mod.id
   ],
 	execute(message, args) {
+    console.log(`> ${member.tag} called yardim.js "${message.content}"`);
+
 		const data = []
 		const { commands } = message.client
 

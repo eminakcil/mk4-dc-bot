@@ -10,6 +10,7 @@ module.exports = {
     roller.admin.id
   ],
   execute(message, args) {
+    console.log(`> ${member.tag} called unmod-yt.js "${message.content}"`);
     const taggedUser = message.mentions.users.first()
     if (taggedUser) {
       const member = message.guild.member(taggedUser)

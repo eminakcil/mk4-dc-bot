@@ -11,6 +11,7 @@ module.exports = {
 		roller.mod.id
 	],
 	execute(message, args) {
+    console.log(`> ${member.tag} called temizle.js "${message.content}"`);
 		const amount = parseInt(args[0]) + 1
 
 		if (isNaN(amount)) {

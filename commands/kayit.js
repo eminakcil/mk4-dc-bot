@@ -11,6 +11,8 @@ module.exports = {
     roller.mod.id
   ],
   execute(message, args) {
+    const member = message.member.user
+    console.log(`> ${member.tag} called kayit.js "${message.content}"`);
     const taggedUser = message.mentions.users.first()
     if (taggedUser) {
       const member = message.guild.member(taggedUser)
