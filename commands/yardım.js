@@ -1,4 +1,5 @@
-const { prefix } = require('../config.json');
+const { prefix } = require('../config.json')
+const roller = require('../rol.json')
 
 module.exports = {
 	name: 'yardım',
@@ -6,41 +7,45 @@ module.exports = {
 	aliases: ['commands'],
 	usage: '[komut]',
 	cooldown: 5,
+  access: [
+		roller.admin.id,
+		roller.mod.id
+  ],
 	execute(message, args) {
-		const data = [];
-		const { commands } = message.client;
+		const data = []
+		const { commands } = message.client
 
 		if (!args.length) {
-			data.push('İşte tüm komutlarımın listesi:');
-			data.push(commands.map(command => command.name).join(', '));
-			data.push(`Belirli bir komut hakkında bilgi almak için \`${prefix}yardım [komut] \` gönderebilirsiniz!`);
+			data.push('İşte tüm komutlarımın listesi:')
+			data.push(commands.map(command => command.name).join(', '))
+			data.push(`Belirli bir komut hakkında bilgi almak için \`${prefix}yardım [komut] \` gönderebilirsiniz!`)
 
 			return message.author.send(data, { split: true })
 				.then(() => {
-					if (message.channel.type === 'dm') return;
-					message.reply('Sana tüm komutlarımla birlikte bir DM gönderdim!');
+					if (message.channel.type === 'dm') return
+					message.reply('Sana tüm komutlarımla birlikte bir DM gönderdim!')
 				})
 				.catch(error => {
-					console.error(`${Message.author.tag} yardım DM gönderilemedi.\n`, error);
-					message.reply('sana DM gönderemiyorum gibi görünüyor!');
-				});
+					console.error(`${Message.author.tag} yardım DM gönderilemedi.\n`, error)
+					message.reply('sana DM gönderemiyorum gibi görünüyor!')
+				})
 		}
 
-		const name = args[0].toLowerCase();
-		const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
+		const name = args[0].toLowerCase()
+		const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name))
 
 		if (!command) {
-			return message.reply('bu geçerli bir komut değil');
+			return message.reply('bu geçerli bir komut değil')
 		}
 
-		data.push(`**Komut:** ${command.name}`);
+		data.push(`**Komut:** ${command.name}`)
 
-		if (command.aliases) data.push(`**Takma İsimler:** ${command.aliases.join(', ')}`);
-		if (command.description) data.push(`**Açıklama:** ${command.description}`);
-		if (command.usage) data.push(`**Kullanım:** ${prefix}${command.name} ${command.usage}`);
+		if (command.aliases) data.push(`**Takma İsimler:** ${command.aliases.join(', ')}`)
+		if (command.description) data.push(`**Açıklama:** ${command.description}`)
+		if (command.usage) data.push(`**Kullanım:** ${prefix}${command.name} ${command.usage}`)
 
-		data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
+		data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`)
 
-		message.channel.send(data, { split: true });
+		message.channel.send(data, { split: true })
 	},
-};
+}

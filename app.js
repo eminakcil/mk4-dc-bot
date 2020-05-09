@@ -18,6 +18,7 @@ client.on('ready', () => {
 })
 
 client.on('message', message => {
+  const member = message.guild.member(message.member.user)
   if (!message.content.startsWith(prefix) || message.author.bot) return
   const args = message.content.slice(prefix.length).split(/ +/)
   const commandName = args.shift().toLowerCase()
@@ -25,6 +26,12 @@ client.on('message', message => {
   if (!client.commands.has(commandName)) return
 
   const command = client.commands.get(commandName)
+  if (!member.roles.cache.some(r=>command.access.includes(r.id))) {
+    message.channel.send("bu komutu kullanamıyorsun gibi gözüküyor!")
+    return
+  }
+  
+  
   if (command.args && !args.length) {
     let reply = `Hiç argüman girmedin, ${message.author}!`
     if (command.usage) {
