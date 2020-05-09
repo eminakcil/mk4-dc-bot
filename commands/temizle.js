@@ -11,6 +11,7 @@ module.exports = {
 		roller.mod.id
 	],
 	execute(message, args) {
+    const member = message.member.user
     console.log(`> ${member.tag} called temizle.js "${message.content}"`);
 		const amount = parseInt(args[0]) + 1
 
