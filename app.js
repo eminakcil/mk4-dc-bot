@@ -45,6 +45,7 @@ client.on('message', message => {
   }
 
   try {
+    console.log(`> ${member.displayName} called ${command.name} "${message.content}"`);
     command.execute(message, args)
   } catch (error) {
     console.error(error)
