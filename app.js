@@ -1,20 +1,49 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const fs = require('fs')
+const Discord = require('discord.js')
+const { prefix, token } = require('./config.json')
 
-const roller = {
-  admin: { name: 'Admin', id: '707582955819892772' },
-  mod: { name: 'Mod', id: '707582955819892775' },
-  uye: { name: 'Uye', id: '707582955819892770' },
-  misafir: { name: 'Misafir', id: '707612049718509698' },
-  ban: { name: 'Ban', id: '708531415213539388' },
-  mute: { name: 'Mute', id: 'Mute' },
-  move: { name: 'Taşı', id: '708551852282740797' }
+const client = new Discord.Client()
+client.commands = new Discord.Collection()
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'))
+
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`)
+  client.commands.set(command.name, command)
 }
+
 client.on('ready', () => {
   console.log('Hazırım!')
 })
 
 client.on('message', message => {
+  if (!message.content.startsWith(prefix) || message.author.bot) return
+  const args = message.content.slice(prefix.length).split(/ +/)
+  const commandName = args.shift().toLowerCase()
+
+  if (!client.commands.has(commandName)) return
+
+
+
+  const command = client.commands.get(commandName)
+  if (command.args && !args.length) {
+    let reply = `You didn't provide any arguments, ${message.author}!`
+    if (command.usage) {
+      reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``
+    }
+    return message.channel.send(reply)
+  }
+
+  if (command.guildOnly && message.channel.type !== 'text') {
+    return message.reply('Sadece sunucuda çalışan komut.')
+  }
+
+  try {
+    command.execute(message, args)
+  } catch (error) {
+    console.error(error)
+    message.reply('there was an error trying to execute that command!')
+  }
 
 })
 
@@ -24,4 +53,4 @@ client.on('guildMemberAdd', (member) => {
   member.roles.add(misafirRol)
 })
 
-client.login('NzA4NTU4NjcwMzgzOTM5NTk1.XrZG2Q.CmBAUyIkcN25V5HAwZLNI7EmQP8')
+client.login(token)
