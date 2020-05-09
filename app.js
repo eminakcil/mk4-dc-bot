@@ -1,6 +1,7 @@
 const fs = require('fs')
 const Discord = require('discord.js')
 const { prefix, token } = require('./config.json')
+const roller = require('./rol.json')
 
 const client = new Discord.Client()
 client.commands = new Discord.Collection()
@@ -23,13 +24,11 @@ client.on('message', message => {
 
   if (!client.commands.has(commandName)) return
 
-
-
   const command = client.commands.get(commandName)
   if (command.args && !args.length) {
-    let reply = `You didn't provide any arguments, ${message.author}!`
+    let reply = `Hiç argüman girmedin, ${message.author}!`
     if (command.usage) {
-      reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``
+      reply += `\nUygun kullanım: \`${prefix}${command.name} ${command.usage}\``
     }
     return message.channel.send(reply)
   }
@@ -42,15 +41,14 @@ client.on('message', message => {
     command.execute(message, args)
   } catch (error) {
     console.error(error)
-    message.reply('there was an error trying to execute that command!')
+    message.reply('komut çalıştırılırken hata oluştu!')
   }
 
 })
 
 client.on('guildMemberAdd', (member) => {
   //rol atayabilrisin ve hoşgeldin mesajı bla bla bla
-  const misafirRol = member.guild.roles.cache.get(roller.misafir.id)
-  member.roles.add(misafirRol)
+  member.roles.add(roller.misafir.id)
 })
 
 client.login(token)
