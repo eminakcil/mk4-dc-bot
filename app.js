@@ -59,7 +59,7 @@ client.on('message', message => {
 
 client.on('guildMemberAdd', (member) => {
   //yeni gelen üyeler
-  member.roles.add(roller.misafir.id)
+  member.roles.add(roller.uye.id)
 })
 
 client.login(process.env.DC_TOKEN)
